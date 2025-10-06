@@ -2,7 +2,7 @@ using UnityEngine;
 
 // ========== EnergySystem Script ==========
 // manages functions that can reduce or add energy
-// energy is a percentage with 100 being the maximum and 0 the minimum 
+// energy is a percentage with "totalEnergy" being the maximum and 0 the minimum 
 // 
 // ---- USAGE ----
 // EnergySystem.es.<functionCall> where functionCall is any of the public functions marked below (e.g. ReduceEnergy(n) or GetCurrentEnergy())
@@ -10,9 +10,9 @@ using UnityEngine;
 public class EnergySystem : MonoBehaviour
 {
 
-    public static EnergySystem es; 
+    public static EnergySystem es;
 
-    public float totalEnergy = 100f;  
+    public float totalEnergy = 100f;
     private float energy;
     private float energyDrainRate = 1f;
 
@@ -104,6 +104,16 @@ public class EnergySystem : MonoBehaviour
     public void ResetEnergy()
     {
         energy = totalEnergy;
+    }
+
+    // Given a time frame, returns the drain rate that would deplete all energy in that time frame
+    // (e.g. suppose we want all of the energy to get depleted over 5 minutes (aka 300 seconds). 
+    // SetDrainRateByTime(300) would set the drain rate so that, after calling this function, the energy
+    // will get depleted after 5 minutes. It also returns the new energy drain rate.)
+    public float SetDrainRateByTime(int seconds)
+    {
+        energyDrainRate = totalEnergy / seconds;
+        return energyDrainRate;
     }
 
 
