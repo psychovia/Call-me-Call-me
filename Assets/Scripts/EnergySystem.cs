@@ -16,7 +16,7 @@ public class EnergySystem : MonoBehaviour
     private float energy;
     private float energyDrainRate = 1f;
 
-    // === Alternatives based on how we want to use the energy system moving forward ===
+    // =========================== Alternatives based on how we want to use the energy system moving forward ===========================
     // private float timeForDrain = 120f;                           // 2 minutes
     // private float altDrainRate = energy / timeForDrain;         // gives us the drain rate so that all energy will be drained after timeForDrain seconds
 
