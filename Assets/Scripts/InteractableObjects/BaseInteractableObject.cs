@@ -39,4 +39,10 @@ public class BaseInteractableObject : MonoBehaviour, I_Interactable
     {
         return this.transform;
     }
+
+    // On Destroy
+    private void OnDestroy()
+    {
+        PlayerInteract.Instance.ClearClosestInteractable();
+    }
 }
