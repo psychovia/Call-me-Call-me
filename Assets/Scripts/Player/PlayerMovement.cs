@@ -2,8 +2,8 @@ using UnityEngine;
 
 public class PlayerMovement : MonoBehaviour
 {
-    // Events
-
+    // Singleton
+    public static PlayerMovement Instance { get; private set; }
 
     // Variables
     [Header("References")]
@@ -16,6 +16,19 @@ public class PlayerMovement : MonoBehaviour
 
     private bool isWalking;
     private bool isSprinting;
+
+    private bool isMoving = false;
+
+    // Awake
+    private void Awake()
+    {
+        Instance = this;
+
+        if (Instance != this)
+        {
+            Debug.LogError("There are multiple PlayerMovement instances!");
+        }
+    }
 
     // Start
     private void Start()
@@ -46,11 +59,28 @@ public class PlayerMovement : MonoBehaviour
 
         // Move player
         if (isSprinting) // sprinting
-        { transform.position += moveDir * sprintSpeed * Time.deltaTime; }
-        else // normal speed
-        { transform.position += moveDir * moveSpeed * Time.deltaTime; }
+        { 
+            transform.position += moveDir * sprintSpeed * Time.deltaTime; //move player
 
-            // Rotation
-            transform.forward = Vector3.Slerp(transform.forward, moveDir, Time.deltaTime * rotationSpeed);
+            isWalking = false; //not walking
+        }
+        else if (moveDir != Vector3.zero) // normal speed and not standstill
+        {
+            transform.position += moveDir * moveSpeed * Time.deltaTime; //move player
+
+            isWalking = true; //walking
+        }
+
+        // check for is moving
+        isMoving = moveDir != Vector3.zero ? true : false;
+
+        // Rotation
+        transform.forward = Vector3.Slerp(transform.forward, moveDir, Time.deltaTime * rotationSpeed);
+    }
+
+    // Is Moving
+    public bool IsMoving()
+    {
+        return isMoving;
     }
 }
