@@ -12,9 +12,9 @@ public class EnergySystem : MonoBehaviour
 
     public static EnergySystem es;
 
-    public float totalEnergy = 100f;
-    private float energy;
-    private float energyDrainRate = 1f;
+    public float totalEnergy = 100f;                
+    public float energy { get; private set; }       
+    private float energyDrainRate = 1f;             
 
     // =========================== Alternatives based on how we want to use the energy system moving forward ===========================
     // private float timeForDrain = 120f;                           // 2 minutes
