@@ -63,6 +63,10 @@ public class PlayerMovement : MonoBehaviour
     }
 
     // Handle Movement
+    /// <summary>
+    /// Moves the player if it is able to move in the direction of the players input,
+    /// as well as slerps the rotation of the player
+    /// </summary>
     private void HandleMovement()
     {
         // Get input vector
@@ -88,6 +92,11 @@ public class PlayerMovement : MonoBehaviour
     }
 
     // Can Move Distance
+    /// <summary>
+    /// Uses capsule casts, the player position, and the player radius to determine if the player 
+    /// can move in a certain direction. If not, it projects the move direction along the obstruction
+    /// and checks if it can now move in that direction.
+    /// </summary>
     private bool CanMove(ref Vector3 moveDir)
     {
         Debug.DrawRay(playerCenter, moveDir, Color.green, 2f);
@@ -138,6 +147,9 @@ public class PlayerMovement : MonoBehaviour
     }
 
     // Move Player
+    /// <summary>
+    /// Modifies the transform of the player directly by adding the moveDir * moveDist
+    /// </summary>
     private void MovePlayer(Vector3 moveDir, float moveDist)
     {
         transform.position += moveDir * moveDist;
