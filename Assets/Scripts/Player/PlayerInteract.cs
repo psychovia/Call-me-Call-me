@@ -8,7 +8,6 @@ public class PlayerInteract : MonoBehaviour
     // Variables
     [SerializeField] private float interactRange = 3f;
     [SerializeField] private LayerMask interactableMask;
-    [SerializeField] private bool showDebugSphere = true;
 
     private I_Interactable closestInteractable;
     private float closestDist;
@@ -42,15 +41,6 @@ public class PlayerInteract : MonoBehaviour
         {
             CheckForInteractables();
         }
-    }
-
-    // On Draw Gizmos
-    private void OnDrawGizmos()
-    {
-        if (!showDebugSphere) return;
-
-        Gizmos.color = Color.cyan;
-        Gizmos.DrawWireSphere(transform.position, interactRange);
     }
 
     // Check For Interactables
