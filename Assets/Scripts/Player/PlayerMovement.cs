@@ -31,6 +31,7 @@ public class PlayerMovement : MonoBehaviour
 
     private Vector2 inputVector;
     private Vector3 moveDir;
+    private float moveSpeed;
     private float verticalInput;
 
     // Awake
@@ -81,6 +82,7 @@ public class PlayerMovement : MonoBehaviour
         inputVector = GameInput.Instance.GetInputVectorNormalized();
         verticalInput = GameInput.Instance.GetVerticalInput();
         moveDir = new Vector3(inputVector.x, 0.0f, inputVector.y);
+        moveSpeed = isSprinting ? sprintSpeed : walkSpeed;
 
         if (gravityOn)
         {
@@ -104,7 +106,6 @@ public class PlayerMovement : MonoBehaviour
     /// </summary>
     private void HandleMovement()
     {
-        float moveSpeed = isSprinting ? sprintSpeed : walkSpeed;
         float moveDistance = moveSpeed * Time.deltaTime;
         isMoving = moveDir != Vector3.zero;
         

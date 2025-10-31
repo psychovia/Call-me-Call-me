@@ -28,8 +28,6 @@ public class GameInput : MonoBehaviour
         MoveDown,
         MoveLeft,
         MoveRight,
-        MoveUp, 
-        MoveDown, 
         Interact,
         GamepadInteract,
         Pause,
