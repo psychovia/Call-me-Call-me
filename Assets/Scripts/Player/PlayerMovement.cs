@@ -23,7 +23,15 @@ public class PlayerMovement : MonoBehaviour
     private Vector3 playerTop;
 
     private bool isSprinting;
+    private bool gravityOn;
+
     private bool isMoving = false;
+
+    private Rigidbody rb;
+
+    private Vector2 inputVector;
+    private Vector3 moveDir;
+    private float verticalInput;
 
     // Awake
     private void Awake()
@@ -38,12 +46,15 @@ public class PlayerMovement : MonoBehaviour
         playerHeight = transform.localScale.y * 2; // set player height
         playerCenter = transform.position + new Vector3(0f, playerHeight / 2, 0f);
         playerTop = transform.position + new Vector3(0f, playerHeight, 0f);
+        rb = GetComponent<Rigidbody>();
     }
 
     // Start
     private void Start()
     {
         GameInput.Instance.OnSprintAction += GameInput_OnSprintAction;
+
+        gravityOn = rb.useGravity; 
     }
 
     // On Destroy
@@ -61,11 +72,29 @@ public class PlayerMovement : MonoBehaviour
     // Update
     private void Update()
     {
-        HandleMovement();
-
         // handle player center and top
         playerCenter = transform.position + new Vector3(0f, playerHeight / 2, 0f);
         playerTop = transform.position + new Vector3(0f, playerHeight, 0f);
+        
+        // Zero Gravity Movement uses physics so it lives in FixedUpdate
+        // But since input occurs every frame, we will be catching inputs here
+        inputVector = GameInput.Instance.GetInputVectorNormalized();
+        verticalInput = GameInput.Instance.GetVerticalInput();
+        moveDir = new Vector3(inputVector.x, 0.0f, inputVector.y);
+
+        if (gravityOn)
+        {
+            HandleMovement();
+        }
+    }
+
+    private void FixedUpdate()
+    {
+        // Only run this if gravity is off
+        if (!gravityOn)
+        {
+            HandleZeroGravityMovement();
+        }
     }
 
     // Handle Movement
@@ -75,26 +104,47 @@ public class PlayerMovement : MonoBehaviour
     /// </summary>
     private void HandleMovement()
     {
-        // Get input vector
-        Vector2 inputVector = GameInput.Instance.GetInputVectorNormalized();
-
-        // Cast to 3D vector
-        Vector3 moveDir = new Vector3(inputVector.x, 0f, inputVector.y);
-
         float moveSpeed = isSprinting ? sprintSpeed : walkSpeed;
         float moveDistance = moveSpeed * Time.deltaTime;
-
+        isMoving = moveDir != Vector3.zero;
+        
         // Move player
         if (CanMove(ref moveDir))
         {
             MovePlayer(moveDir, moveDistance);
         }
 
-        // check for is moving
-        isMoving = moveDir != Vector3.zero ? true : false;
-
         // Rotation
-        transform.forward = Vector3.Slerp(transform.forward, moveDir, Time.deltaTime * rotationSpeed);
+        // Fail safe check for moveDir is not zero to avoid "Look rotation viewing vector is zero" error
+        if (isMoving)
+        {
+            transform.forward = Vector3.Slerp(transform.forward, moveDir, Time.deltaTime * rotationSpeed);
+        }
+    }
+    
+    private void HandleZeroGravityMovement()
+    {
+        // Getting 3D move dir info
+        Vector3 moveDir3D = new Vector3(inputVector.x, verticalInput, inputVector.y);
+        isMoving = moveDir3D != Vector3.zero;
+
+        Debug.Log(moveDir3D);
+
+        if (isMoving)
+        {
+            // No sprint speed right now since we are overloading leftshift for
+            // both sprint and 3D down
+            float targetSpeed = moveSpeed;
+
+            // Normalizing 3D move dir
+            rb.AddForce(moveDir3D.normalized * targetSpeed, ForceMode.Acceleration);
+
+            // Rotation (We are only doing 2D rotation currently)
+            if (moveDir != Vector3.zero)
+            {
+                transform.forward = Vector3.Slerp(transform.forward, moveDir.normalized, Time.fixedDeltaTime * rotationSpeed);
+            }
+        }
     }
 
     // Can Move Distance

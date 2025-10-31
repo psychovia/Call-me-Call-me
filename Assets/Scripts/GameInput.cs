@@ -28,6 +28,8 @@ public class GameInput : MonoBehaviour
         MoveDown,
         MoveLeft,
         MoveRight,
+        MoveUp, 
+        MoveDown, 
         Interact,
         GamepadInteract,
         Pause,
@@ -120,6 +122,25 @@ public class GameInput : MonoBehaviour
 
         // Return input vector
         return inputVector;
+    }
+    
+    public float GetVerticalInput()
+    {
+        float verticalInput = 0f;
+
+        // Check if the "MoveUp" action is pressed
+        if (inputSystemActions.Player.ZeroGUp.IsPressed())
+        {
+            verticalInput += 1f;
+        }
+
+        // Check if the "MoveDown" action is pressed
+        if (inputSystemActions.Player.ZeroGDown.IsPressed())
+        {
+            verticalInput -= 1f;
+        }
+
+        return verticalInput;
     }
 
     // Get Binding Text
