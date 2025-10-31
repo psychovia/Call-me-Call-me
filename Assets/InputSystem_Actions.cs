@@ -135,6 +135,24 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ZeroGUp"",
+                    ""type"": ""Button"",
+                    ""id"": ""bf8a3c93-33b0-47c7-acc2-3aeb27d8777e"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ZeroGDown"",
+                    ""type"": ""Button"",
+                    ""id"": ""4c596487-1074-457b-b42d-ed8056ee288e"",
+                    ""expectedControlType"": """",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -335,6 +353,28 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
                     ""action"": ""Pause"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""eb98b815-20e0-40a7-9f3d-8ecb1eed095e"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": "";Keyboard&Mouse"",
+                    ""action"": ""ZeroGUp"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""1f4646bf-15f7-4e23-97ad-acdff595984e"",
+                    ""path"": ""<Keyboard>/shift"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ZeroGDown"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -409,6 +449,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_Sprint = m_Player.FindAction("Sprint", throwIfNotFound: true);
         m_Player_Pause = m_Player.FindAction("Pause", throwIfNotFound: true);
+        m_Player_ZeroGUp = m_Player.FindAction("ZeroGUp", throwIfNotFound: true);
+        m_Player_ZeroGDown = m_Player.FindAction("ZeroGDown", throwIfNotFound: true);
     }
 
     ~@InputSystem_Actions()
@@ -494,6 +536,8 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_Sprint;
     private readonly InputAction m_Player_Pause;
+    private readonly InputAction m_Player_ZeroGUp;
+    private readonly InputAction m_Player_ZeroGDown;
     /// <summary>
     /// Provides access to input actions defined in input action map "Player".
     /// </summary>
@@ -525,6 +569,14 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// Provides access to the underlying input action "Player/Pause".
         /// </summary>
         public InputAction @Pause => m_Wrapper.m_Player_Pause;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/ZeroGUp".
+        /// </summary>
+        public InputAction @ZeroGUp => m_Wrapper.m_Player_ZeroGUp;
+        /// <summary>
+        /// Provides access to the underlying input action "Player/ZeroGDown".
+        /// </summary>
+        public InputAction @ZeroGDown => m_Wrapper.m_Player_ZeroGDown;
         /// <summary>
         /// Provides access to the underlying input action map instance.
         /// </summary>
@@ -566,6 +618,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Pause.started += instance.OnPause;
             @Pause.performed += instance.OnPause;
             @Pause.canceled += instance.OnPause;
+            @ZeroGUp.started += instance.OnZeroGUp;
+            @ZeroGUp.performed += instance.OnZeroGUp;
+            @ZeroGUp.canceled += instance.OnZeroGUp;
+            @ZeroGDown.started += instance.OnZeroGDown;
+            @ZeroGDown.performed += instance.OnZeroGDown;
+            @ZeroGDown.canceled += instance.OnZeroGDown;
         }
 
         /// <summary>
@@ -592,6 +650,12 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
             @Pause.started -= instance.OnPause;
             @Pause.performed -= instance.OnPause;
             @Pause.canceled -= instance.OnPause;
+            @ZeroGUp.started -= instance.OnZeroGUp;
+            @ZeroGUp.performed -= instance.OnZeroGUp;
+            @ZeroGUp.canceled -= instance.OnZeroGUp;
+            @ZeroGDown.started -= instance.OnZeroGDown;
+            @ZeroGDown.performed -= instance.OnZeroGDown;
+            @ZeroGDown.canceled -= instance.OnZeroGDown;
         }
 
         /// <summary>
@@ -732,5 +796,19 @@ public partial class @InputSystem_Actions: IInputActionCollection2, IDisposable
         /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
         /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
         void OnPause(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "ZeroGUp" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnZeroGUp(InputAction.CallbackContext context);
+        /// <summary>
+        /// Method invoked when associated input action "ZeroGDown" is either <see cref="UnityEngine.InputSystem.InputAction.started" />, <see cref="UnityEngine.InputSystem.InputAction.performed" /> or <see cref="UnityEngine.InputSystem.InputAction.canceled" />.
+        /// </summary>
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.started" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.performed" />
+        /// <seealso cref="UnityEngine.InputSystem.InputAction.canceled" />
+        void OnZeroGDown(InputAction.CallbackContext context);
     }
 }
