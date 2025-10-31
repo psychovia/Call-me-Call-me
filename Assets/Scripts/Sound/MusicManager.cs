@@ -34,9 +34,6 @@ public class MusicManager : MonoBehaviour
     private void Start()
     {
         audioSource.Play();
-
-        Debug.Log("MusicManager starting with clip: " + audioSource.clip?.name);
-        Debug.Log("AudioSource isPlaying: " + audioSource.isPlaying);
     }
 
     // Change Volume
