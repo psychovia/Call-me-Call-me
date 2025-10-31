@@ -8,8 +8,7 @@ public static class SceneLoader
     // Variables
     public enum Scene
     {
-        EnergyCapsule,
-        LivingCapsule,
+        MenuScene,
         LoadingScene,
         TestScene,
     }

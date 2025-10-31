@@ -8,7 +8,6 @@ public class PlayerInteract : MonoBehaviour
     // Variables
     [SerializeField] private float interactRange = 3f;
     [SerializeField] private LayerMask interactableMask;
-    [SerializeField] private bool showDebugSphere = true;
 
     private I_Interactable closestInteractable;
     private float closestDist;
@@ -34,6 +33,12 @@ public class PlayerInteract : MonoBehaviour
         ClearClosestInteractable();
     }
 
+    // On Destroy
+    private void OnDestroy()
+    {
+        GameInput.Instance.OnInteractAction -= GameInput_OnInteractAction;
+    }
+
     // Update
     private void Update()
     {
@@ -44,16 +49,11 @@ public class PlayerInteract : MonoBehaviour
         }
     }
 
-    // On Draw Gizmos
-    private void OnDrawGizmos()
-    {
-        if (!showDebugSphere) return;
-
-        Gizmos.color = Color.cyan;
-        Gizmos.DrawWireSphere(transform.position, interactRange);
-    }
-
     // Check For Interactables
+    /// <summary>
+    /// Checks in a specific range overlap sphere for any object with the "Interactables" tag. 
+    /// If one exists, it sets the closest one to selected and enables its selected visual
+    /// </summary>
     private void CheckForInteractables()
     {
         interactablesInRange = Physics.OverlapSphere(transform.position, interactRange, interactableMask);
@@ -102,6 +102,10 @@ public class PlayerInteract : MonoBehaviour
     }
 
     // Clear Closest Interactable
+    /// <summary>
+    /// Removes the closest interactable from the player and disables the selected visual.
+    /// Ex: when the player leaves the radius of any interactable object.
+    /// </summary>
     public void ClearClosestInteractable()
     {
         if (closestInteractable != null)
