@@ -46,6 +46,12 @@ public class PlayerMovement : MonoBehaviour
         GameInput.Instance.OnSprintAction += GameInput_OnSprintAction;
     }
 
+    // On Destroy
+    private void OnDestroy()
+    {
+        GameInput.Instance.OnSprintAction -= GameInput_OnSprintAction;
+    }
+
     // Game Input- On Sprint Action
     private void GameInput_OnSprintAction(object sender, GameInput.OnSprintActionEventHandler e)
     {
@@ -156,20 +162,11 @@ public class PlayerMovement : MonoBehaviour
     }
 
     // Is Moving
-    public bool IsMoving()
-    {
-        return isMoving;
-    }
+    public bool IsMoving() { return isMoving; }
 
     // Get Player Top
-    public Vector3 GetPlayerTop()
-    {
-        return playerTop;
-    }
+    public Vector3 GetPlayerTop() { return playerTop; }
 
     // Get Player Center
-    public Vector3 GetPlayerCenter()
-    {
-        return playerCenter;
-    }
+    public Vector3 GetPlayerCenter() { return playerCenter; }
 }

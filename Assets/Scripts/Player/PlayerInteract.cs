@@ -33,6 +33,12 @@ public class PlayerInteract : MonoBehaviour
         ClearClosestInteractable();
     }
 
+    // On Destroy
+    private void OnDestroy()
+    {
+        GameInput.Instance.OnInteractAction -= GameInput_OnInteractAction;
+    }
+
     // Update
     private void Update()
     {
