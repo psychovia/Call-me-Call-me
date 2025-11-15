@@ -1,5 +1,6 @@
 using UnityEngine;
 
+[RequireComponent(typeof(Collider))]
 public class BaseInteractableObject : MonoBehaviour, I_Interactable
 {
     // Variables

@@ -40,12 +40,15 @@ public class GameInput : MonoBehaviour
     private void Awake()
     {
         // Handle Singleton
-        if (Instance != this && Instance != null)
+        if (Instance == null)
         {
-            Debug.LogError("There is more than one Gmae Input");
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
         }
-
-        Instance = this;
+        else
+        {
+            Destroy(gameObject);
+        }
 
         // Initialize input
         inputSystemActions = new InputSystem_Actions();

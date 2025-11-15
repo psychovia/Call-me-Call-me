@@ -17,12 +17,14 @@ public class QuitConfirmationUI : MonoBehaviour
     private void Awake()
     {
         // Manage singleton
-        if (Instance != this && Instance != null)
+        if (Instance == null)
         {
-            Debug.LogError("There is more than one QuitConfirmationUI object!!!");
+            Instance = this;
         }
-
-        Instance = this;
+        else
+        {
+            Destroy(gameObject);
+        }
 
         // Quit Button
         quitButton.onClick.AddListener(() =>

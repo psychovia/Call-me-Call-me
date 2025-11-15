@@ -30,13 +30,15 @@ public class SettingsUI : MonoBehaviour
     private void Awake()
     {
         // Manage singleton
-        if (Instance != this && Instance != null)
+        if (Instance == null)
         {
-            Debug.LogError("There is more than one SettingsUI object!!!");
+            Instance = this;
+        }
+        else
+        {
+            Destroy(gameObject);
         }
 
-        Instance = this;
-        
         // Sound Effects Slider
         sfxSlider.value = PlayerPrefs.GetFloat(PLAYER_PREFS_SOUND_EFFECTS_VOLUME, 1f);
         sfxSlider.onValueChanged.AddListener(value =>

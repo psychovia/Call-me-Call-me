@@ -16,12 +16,14 @@ public class PauseUI : MonoBehaviour
     private void Awake()
     {
         // Manage singleton
-        if (Instance != this && Instance != null)
+        if (Instance == null)
         {
-            Debug.LogError("There is more than one MainMenuUI object!!!");
+            Instance = this;
         }
-
-        Instance = this;
+        else
+        {
+            Destroy(gameObject);
+        }
 
         //play button
         resumeButton.onClick.AddListener(() =>

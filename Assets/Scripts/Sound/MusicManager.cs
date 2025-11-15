@@ -16,12 +16,16 @@ public class MusicManager : MonoBehaviour
     // Awake
     private void Awake()
     {
-        if (Instance != this && Instance != null)
+        // Handle Singleton
+        if (Instance == null)
         {
-            Debug.LogError("There is more than one Music Manager instance!");
+            Instance = this;
+            DontDestroyOnLoad(gameObject);
         }
-
-        Instance = this;
+        else
+        {
+            Destroy(gameObject);
+        }
 
         audioSource = GetComponent<AudioSource>();
 

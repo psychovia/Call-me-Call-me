@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 
 // ========== EnergySystem Script ==========
@@ -11,6 +12,8 @@ public class EnergySystem : MonoBehaviour
 {
 
     public static EnergySystem es;
+
+    public event EventHandler OnEnergyChanged;
 
     public float totalEnergy = 100f;                
     public float energy { get; private set; }       
@@ -37,6 +40,16 @@ public class EnergySystem : MonoBehaviour
         energy = totalEnergy;
     }
 
+    private void OnEnable()
+    {
+        OnEnergyChanged += ES_OnEnergyChanged;
+    }
+
+    private void OnDisable()
+    {
+        OnEnergyChanged -= ES_OnEnergyChanged;
+    }
+
     // Update is called once per frame
     void Update()
     {
@@ -50,8 +63,24 @@ public class EnergySystem : MonoBehaviour
             // reduce energy by drain rate
             energy -= energyDrainRate * Time.deltaTime;
             energy = Mathf.Clamp(energy, 0f, totalEnergy);
+
+            if (energyDrainRate != 0f)
+            {
+                OnEnergyChanged?.Invoke(this, EventArgs.Empty);
+            }
         }
     }
+    
+    // On Energy Changed
+    private void ES_OnEnergyChanged(object sender, EventArgs e)
+    {
+        if (EnergySystem.es.GetCurrentEnergy() <= 0f)
+        {
+            CycleManager.Instance.EndCycle(true); //force end the cycle
+        }
+    }
+
+
 
     // ==============================================================
     //                        PUBLIC FUNCTIONS
@@ -68,6 +97,8 @@ public class EnergySystem : MonoBehaviour
         }
         energy -= n;
         energy = Mathf.Clamp(energy, 0f, totalEnergy);
+
+        OnEnergyChanged?.Invoke(this, EventArgs.Empty);
     }
 
     // Increases energy by a given number n
@@ -81,6 +112,8 @@ public class EnergySystem : MonoBehaviour
         }
         energy += n;
         energy = Mathf.Clamp(energy, 0f, totalEnergy);
+
+        OnEnergyChanged?.Invoke(this, EventArgs.Empty);
     }
 
     // Sets a new drain rate
@@ -104,6 +137,8 @@ public class EnergySystem : MonoBehaviour
     public void ResetEnergy()
     {
         energy = totalEnergy;
+
+        OnEnergyChanged?.Invoke(this, EventArgs.Empty);
     }
 
     // Given a time frame, returns the drain rate that would deplete all energy in that time frame
