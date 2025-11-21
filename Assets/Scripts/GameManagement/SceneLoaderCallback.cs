@@ -22,5 +22,8 @@ public class SceneLoaderCallback : MonoBehaviour
             fillBar.fillAmount = asyncLoad.progress;
             yield return null;
         }
+
+        // let game know the scene is done loading
+        SceneLoader.InvokeOnSceneChanged();
     }
 }

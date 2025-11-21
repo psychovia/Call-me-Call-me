@@ -6,7 +6,7 @@ public class SoundManager : MonoBehaviour
     public static SoundManager Instance { get; private set; }
 
     // References
-    [SerializeField] private AudioClipRefsSO audioClipRefsSO;
+    [SerializeField] private SFXRefsSO sfxRefsSO;
 
     // Variables
     private float volume = 1f;
@@ -61,7 +61,7 @@ public class SoundManager : MonoBehaviour
     /// <param name="volumeMultiplier">Volume of the footstep sound</param>
     public void PlayFootstepSound(Vector3 position, float volume = 1f)
     {
-        PlaySound(audioClipRefsSO.footstep, position, volume);
+        PlaySound(sfxRefsSO.footstep, position, volume);
     }
 
     // Change Volume

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -5,6 +6,8 @@ using UnityEngine.SceneManagement;
 
 public static class SceneLoader
 {
+    public static event EventHandler OnSceneChanged;
+
     // Variables
     public enum Scene
     {
@@ -27,5 +30,11 @@ public static class SceneLoader
     public static Scene GetTargetScene()
     {
         return SceneLoader.targetScene;
+    }
+
+    // Invoke On Scene Changed
+    public static void InvokeOnSceneChanged()
+    {
+        OnSceneChanged?.Invoke(null, EventArgs.Empty);
     }
 }
